@@ -2,14 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardFooter, Image, Button, Select, SelectItem } from "@nextui-org/react";
 import { nftAbi, tokenAbi } from './abi';
-
 import {
     useAccount,
     useContractEvent
 } from "wagmi";
-import { useDebounce } from './useDebounce';
 import { readContracts, watchAccount, writeContract, prepareWriteContract } from '@wagmi/core'
-import { decodeAbiParameters } from 'viem'
 
 
 export const Breed = () => {
@@ -116,12 +113,12 @@ export const Breed = () => {
             // let response : any= await fetch(`${process.env.EXPLORER_URL}/api/v2/transactions/${tx.hash}/logs`)
             // response = await response.json()
             // console.log("logs",response);
-            //getNftList();
+            // await getNftList();
         }
 
     }
     const getNftList = async () => {
-        let response: any = await fetch(`${process.env.HOST}/api/bnb/nft?page=1&address=${address}`)
+        let response: any = await fetch(`${process.env.HOST}/api/vic/nft?page=0&address=${address}`)
         response = await response.json()
         const petArr: any = [];
         const petArrA: any = [];
@@ -201,6 +198,7 @@ export const Breed = () => {
                 })
                 setImagePetA(InfoIPFS[0].result)
             }
+
             if (petArrB.length > 0) {
                 setSelectedPetB(petArrB[0].value)
                 const InfoIPFS: any = await readContracts({
@@ -223,11 +221,8 @@ export const Breed = () => {
             setPetDataA(petArrA)
             setPetDataB(petArrB)
             setLoadingState(true)
+            console.log("petArrA",petArr)
         }
-
-
-
-
     }
 
     React.useEffect(() => {

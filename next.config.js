@@ -14,7 +14,7 @@ const nextConfig = {
       FAUCET_ADDRESS:'0x87a741aC23274EAde3D4497B1f02779173f0AE7F',
       DAO_ADDRESS:'0x5228bc93F33A1026999FE181F786F72804da8f64',
       EXPLORER_URL:'https://scan-api-testnet.viction.xyz',
-      HOST:'http://localhost:3000'
+      HOST:'https://joydragon-vic-v2.vercel.app'
     },
 }
 module.exports = nextConfig

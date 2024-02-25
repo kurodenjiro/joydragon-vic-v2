@@ -46,7 +46,7 @@ export const Pet = () => {
     const [connectorsData, setConnectors] = React.useState<any>([])
     const [countDownseconds, setCountDownseconds] = React.useState(0);
     const { address, connector, isConnected } = useAccount()
-    
+
     const { connect, connectors, error: errorConnect, isLoading: isLoadingConnect, pendingConnector } = useConnect()
     const { chain } = useNetwork()
 
@@ -60,6 +60,7 @@ export const Pet = () => {
             />
         );
     }
+
     const SampleNextArrow = (props: any) => {
         const { className, style, onClick } = props;
         return (
@@ -81,31 +82,31 @@ export const Pet = () => {
     };
 
     const getNftList = async () => {
-        let response: any = await fetch(`${process.env.HOST}/api/bnb/nft?page=1&address=${address}`)
+        let response: any = await fetch(`${process.env.HOST}/api/vic/nft?page=0&address=${address}`)
         response = await response.json()
         const nftList: any = [];
         let isPetExist = false;
         let getPetId = await localStorage.getItem('pet')
         if (response?.data) {
             for (const nft of response?.data) {
-                    const Info: any = await readContracts({
-                        contracts: [
-                            {
-                                address: `0x${process.env.NFT_ADDRESS?.slice(2)}`,
-                                abi: nftAbi,
-                                functionName: 'getPetInfo',
-                                args: [BigInt(nft.id)],
-                            }
-                        ],
-                    })
-                    if (nft.id == getPetId) {
-                        isPetExist = true
-                    }
-                    nftList.push({
-                        value: nft.id,
-                        label: Info[0].result[0]
-                    })
-                
+                const Info: any = await readContracts({
+                    contracts: [
+                        {
+                            address: `0x${process.env.NFT_ADDRESS?.slice(2)}`,
+                            abi: nftAbi,
+                            functionName: 'getPetInfo',
+                            args: [BigInt(nft.id)],
+                        }
+                    ],
+                })
+                if (nft.id == getPetId) {
+                    isPetExist = true
+                }
+                nftList.push({
+                    value: nft.id,
+                    label: Info[0].result[0]
+                })
+
             }
         }
 
@@ -121,7 +122,7 @@ export const Pet = () => {
                 localStorage.setItem('pet', nftList[0].value);
                 petId = nftList[0].value;
             }
-            
+
             setSelectedPet(petId)
             const Info: any = await readContracts({
                 contracts: [
@@ -167,7 +168,7 @@ export const Pet = () => {
         if (nftList.length == 0) {
             setIsPet(false)
         }
-        let items: any = [ 1, 2, 3, 4,0];
+        let items: any = [1, 2, 3, 4, 0];
         let itemArr: any = [];
         for (const element of items) {
             const Info: any = await readContracts({
@@ -252,24 +253,31 @@ export const Pet = () => {
             args: [selectedPet, itemId]
         })
         const tx = await writeContract(config);
-        if (tx) {
-            getNftList();
+        if(tx){
+            await getNftList();
         }
 
     }
-    const onEvol = async () => {
-        const config = await prepareWriteContract({
-            address: `0x${process.env.NFT_ADDRESS?.slice(2)}`,
-            abi: nftAbi,
-            functionName: "evolve",
-            args: [selectedPet]
-        })
-        const tx = await writeContract(config);
-        if (tx) {
 
-            getNftList();
+
+    const {
+        config:configEvoleData,
+        error: prepareErrorEvol,
+        isError: isPrepareErrorEvol,
+    } = usePrepareContractWrite({
+        address: `0x${process.env.NFT_ADDRESS?.slice(2)}`,
+        abi: nftAbi,
+        args: [debouncedSelectedPet],
+        functionName: 'evolve',
+    })
+    const { data: dataEvole, error: errorEvol, isError: isErrorEvol, write: asyncEvol } = useContractWrite(configEvoleData)
+
+    const { isLoading: isLoadingEvol, isSuccess: isSuccessEvol } = useWaitForTransaction({
+        hash: dataEvole?.hash,
+        onSuccess(data) {
+            getNftList()
         }
-    }
+    })
 
     const {
         config,
@@ -280,7 +288,7 @@ export const Pet = () => {
         abi: nftAbi,
         functionName: 'mint',
     })
-    const { data: dataMint, error: errorMint, isError: isErrorMint, write: mint } = useContractWrite(config)
+    const { data: dataMint, error: errorMint, isError: isErrorMint, writeAsync: mint } = useContractWrite(config)
 
     const { isLoading: isLoadingMint, isSuccess: isSuccessMint } = useWaitForTransaction({
         hash: dataMint?.hash,
@@ -315,6 +323,7 @@ export const Pet = () => {
             setIsApprove(true);
         }
     })
+
     React.useEffect(() => {
         if (connectors) {
             setConnectors(connectors)
@@ -372,20 +381,22 @@ export const Pet = () => {
                     </div>
                     <div className="col-start-1 col-end-7 ">
                         <div className="flex justify-center">
-                            <Image
-                                radius={"none"}
-                                width={ownPetEvol && (ownPetEvol[1] == 0 ? 70 : ownPetEvol[1] == 1 ? 120 : ownPetEvol[1] == 2 ? 200 : 0)}
-                                src={`/gotchi/animation/${ownPetAttr && ownPetAttr[1] == 0 ? "black_dragon" : "green_dragon"}/${ownPetEvol && ownPetEvol[1]}.gif`}
-                            />
+                            {ownPetEvol && ownPet &&  (
+                                <Image
+                                    radius={"none"}
+                                    width={ownPetEvol && (ownPetEvol[1] == 0 ? 70 : ownPetEvol[1] == 1 ? 120 : ownPetEvol[1] == 2 ? 200 : 0)}
+                                    src={`/gotchi/animation/${ownPetAttr && ownPetAttr[1] == 0 ? "black_dragon" : "green_dragon"}/${ownPetEvol && ownPetEvol[1]}.gif`}
+                                />
+                            )}
                         </div>
                         <div className="flex justify-center pt-5">
                             {ownPetEvol && ownPetEvol[1] == 0 && ownPet[3] > 1 && ownPet[1] !== 4 && (
-                                <Button color="warning" variant="solid" size="sm"  onClick={onEvol}>
+                                <Button color="warning" variant="solid" size="sm" onClick={asyncEvol}>
                                     Evol Now !
                                 </Button>
                             )}
                             {ownPetEvol && ownPetEvol[1] == 1 && ownPet[3] > 2 && ownPet[1] !== 4 && (
-                                <Button color="warning" variant="solid" size="sm"  onClick={onEvol}>
+                                <Button color="warning" variant="solid" size="sm" onClick={asyncEvol}>
                                     Evol Now !
                                 </Button>
                             )}
@@ -516,8 +527,8 @@ export const Pet = () => {
                                                 width={240}
                                             />
                                             <CardFooter className="absolute z-10 flex flex-col justify-center">
-                                                <p className="text-small text-white" style={{marginBottom:"0"}}>{item.name}</p>
-                                                <p className="text-small text-white" style={{marginBottom:"0"}}>{item.name == "Beef" ? "Increase TOD and PTS" : item.name == "Water" ? "Increase TOD and PTS" : item.name == "Shield" ? "Prevent attack" : item.name == "Holy Water" ? "Revival Pet from Dead" : item.name == "Moon Stone" ? "Evol Pet" : ""}</p>
+                                                <p className="text-small text-white" style={{ marginBottom: "0" }}>{item.name}</p>
+                                                <p className="text-small text-white" style={{ marginBottom: "0" }}>{item.name == "Beef" ? "Increase TOD and PTS" : item.name == "Water" ? "Increase TOD and PTS" : item.name == "Shield" ? "Prevent attack" : item.name == "Holy Water" ? "Revival Pet from Dead" : item.name == "Moon Stone" ? "Evol Pet" : ""}</p>
 
                                                 {(ownPet && ownPet[1] == 4 && item.name == "Holy Water") && (
                                                     <button type="button" style={{ backgroundImage: "url(/gotchi/Assets/Buy_Button.png)" }} className="bg-no-repeat bg-center w-full h-16" onClick={() => onBuyAccessory(item.id)}> </button>

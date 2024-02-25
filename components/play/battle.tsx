@@ -14,7 +14,7 @@ import { decodeAbiParameters } from 'viem'
 
 export const Battle = () => {
     const { address } = useAccount();
-    const [page, setPage] = React.useState(1);
+    const [page, setPage] = React.useState(0);
     const [ownPet, setOwnPet] = useState<any>(null)
     const [selectedPet, setSelectedPet] = useState<any>('')
     const [activity, setActivity] = useState<any>([])
@@ -189,7 +189,7 @@ export const Battle = () => {
     };
 
     const getNftList = async () => {
-        const pet = typeof window !== 'undefined' ? localStorage.getItem('pet') + "" : null;
+        const pet = typeof window !== 'undefined' ? localStorage.getItem('pet') : null;
         if (pet) {
             const InfoAttr: any = await readContracts({
                 contracts: [
@@ -231,7 +231,7 @@ export const Battle = () => {
     }
 
     const getPetList = async () => {
-        let response: any = await fetch(`${process.env.HOST}/api/bnb/nft?page=${page}`)
+        let response: any = await fetch(`${process.env.HOST}/api/vic/nft?page=${page}&own_address=${address}`)
         response = await response.json()
         const nftList: any = [];
         let NftListFilter : any =  response?.data?.filter((item: any) => item.to !== address);
