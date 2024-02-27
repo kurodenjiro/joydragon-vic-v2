@@ -229,7 +229,7 @@ export const Home = () => {
                             </div>
                         ) : (
                             <div className="pb-5" style={{ paddingTop: "130%" }}>
-                                <button type="button" style={{ backgroundImage: "url(/Assets/press_to_mint.gif)" }} className=" bg-no-repeat bg-center w-full h-16 " onClick={onMint}> </button>
+                                <button type="button" style={{ backgroundImage: "url(/Assets/press_to_mint.gif)" }} className=" bg-no-repeat bg-center w-full h-16 " onClick={mint}> </button>
 
                             </div>
                         )
@@ -255,7 +255,7 @@ export const Home = () => {
 
             {isSuccess && (
                 <div>
-                    Successfully minted your NFT!
+                    <a className="text-green-400" >Successfully minted your NFT!</a>
                     <div>
                         <a className="text-green-400" href={`${process.env.EXPLORER_URL}/tx/${data?.hash}`}>Scan Tx</a>
                     </div>
@@ -268,6 +268,6 @@ export const Home = () => {
                 <div><span className="text-red-400">Error: {error?.message}</span></div>
             )} */}
 
-            </>
+        </>
     );
 }
