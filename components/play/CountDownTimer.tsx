@@ -34,8 +34,13 @@ const CountDownTimer = ({ targetDate }: commentProp) => {
           seconds: Math.floor((runway % (1000 * 60)) / 1000)
         };
       setRemainSecond(stateObj);
-
-      if (!targetDate) {
+      if (runway < 0 ) {
+        setRemainSecond( {
+          days:  0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0
+        });
         clearInterval(countDown);
       }
     }, 1000);

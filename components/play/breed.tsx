@@ -24,6 +24,7 @@ export const Breed = () => {
     const { address, connector, isConnected } = useAccount()
     const [isApprove, setIsApprove] = React.useState(false)
     const [isPet, setIsPet] = React.useState<any>(false)
+
     useContractEvent({
         address: `0x${process.env.NFT_ADDRESS?.slice(2)}`,
         abi: nftAbi,
@@ -42,6 +43,7 @@ export const Breed = () => {
                             }
                         ],
                     })
+                    
                     const InfoAttr: any = await readContracts({
                         contracts: [
                             {

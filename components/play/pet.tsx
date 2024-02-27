@@ -22,7 +22,7 @@ import {
     useNetwork,
     useSwitchNetwork
 } from "wagmi";
-import { readContracts, watchAccount, writeContract, prepareWriteContract } from '@wagmi/core'
+import { readContracts, watchAccount, writeContract, prepareWriteContract , waitForTransaction } from '@wagmi/core'
 import CountDownTimer from "./CountDownTimer";
 import Slider from "react-slick";
 
@@ -253,9 +253,13 @@ export const Pet = () => {
             args: [selectedPet, itemId]
         })
         const tx = await writeContract(config);
-        if(tx){
-            await getNftList();
-        }
+        const data = await waitForTransaction({
+            hash: tx?.hash,
+          })
+          if(data){
+            getNftList()
+          }
+        
 
     }
 

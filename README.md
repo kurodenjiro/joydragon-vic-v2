@@ -1,53 +1,4 @@
-# NextJS and NextUI Dashboard Template Starter
 
-You can deploy here directly to vercel [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/Siumauricio/nextui-dashboard-template)
-
-
-V1 Version Stitches https://v1-nextui-dashboard-template.vercel.app/
-V1 Code: https://github.com/Siumauricio/nextui-dashboard-template/tree/v1
-
-This is a template for NextJS and NextUI. 
-
-[NextJS](https://nextjs.org/) 
-[NextUI](https://nextui.org/)
-
-You can see the demo here: https://nextui-dashboard-template.vercel.app/
-For improve this template, you can create a pull request or open an issue here [Issues](https://github.com/Siumauricio/nextui-dashboard-template/issues) or [Pull Request](
-    https://github.com/Siumauricio/nextui-dashboard-template/pulls)
-
-### Dark Mode
-![Dashboard Dark Mode](./public/dark.png)
-
-### Light Mode
-![Dashboard Light Mode](./public/light.png)
-
-
-
-- Dark Mode Support
-- Full Responsive
-- Home Page with Charts
-- Accounts Page
-- More pages coming soon...
-
-```
-├── components
-│   ├── accounts            # Accounts components
-│   ├── charts              # Charts components
-│   ├── breadcrumb          # component
-|   ├── home                # Home components
-|   ├── layout              # Layout components
-|   ├── navbar              # Navbar components
-|   ├── sidebar             # Sidebar components
-|   ├── table               # Table components
-|   ├── styles              # Some reusable components
-|   ├── icons               # Icons
-|   ├── hooks               #  Hooks
-├── pages                   # Documentation files 
-│   ├──  _app.tsx           # Entry point for the app
-│   ├──  index.tsx          # Home page
-│   ├── accounts.tsx        # Accounts Page
-│   ├── more...             # Soon
-└──
 
 ```
 ## For Run
@@ -68,3 +19,14 @@ npm run dev
 ```
 
 Now you can visit https://localhost:3000 in your browser.
+
+# Latest VICTest
+
+```bash
+JoyGotchiToken: 0x0994c0e04E5fB8D1271106F4E7957274Bf41Ec75
+JoyGotchi: 0x63a21cb4c9d10c06247Ae4BCc624e3464c6F5BB6
+GameManager: 0x9aa75e76963f3cf340C955C60D9958Fc7f4b235D
+GenePool: 0x72CC1d5FD1F3626eCFF91797910E92A12732Deaa
+Faucet: 0x87a741aC23274EAde3D4497B1f02779173f0AE7F
+DAO: 0x5228bc93F33A1026999FE181F786F72804da8f64
+```
